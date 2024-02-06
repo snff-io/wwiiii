@@ -598,36 +598,7 @@ void change_macros() {
   } while (!done && !a()->sess().hangup());
 }
 
-void change_password() {
-  bout.nl();
-  bout.outstr("|#9Change password? ");
-  if (!bin.yesno()) {
-    return;
-  }
 
-  bout.nl();
-  std::string password = bin.input_password("|#9You must now enter your current password.\r\n|#7: ", 8);
-  if (password != a()->user()->password()) {
-    bout.outstr("\r\nIncorrect.\r\n\n");
-    return;
-  }
-  bout.nl(2);
-  password = bin.input_password("|#9Enter your new password, 3 to 8 characters long.\r\n|#7: ", 8);
-  bout.nl(2);
-  std::string password2 = bin.input_password("|#9Repeat password for verification.\r\n|#7: ", 8);
-  if (password == password2) {
-    if (password2.length() < 3) {
-      bout.nl();
-      bout.outstr("|#6Password must be 3-8 characters long.\r\n|#6Password was not changed.\r\n\n");
-    } else {
-      a()->user()->password(password);
-      bout.outstr("\r\n|#1Password changed.\r\n\n");
-      sysoplog("Changed Password.");
-    }
-  } else {
-    bout.outstr("\r\n|#6VERIFY FAILED.\r\n|#6Password not changed.\r\n\n");
-  }
-}
 
 void modify_mailbox() {
   bout.nl();

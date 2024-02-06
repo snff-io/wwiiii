@@ -169,8 +169,8 @@ static uint16_t FindUserByRealName(const std::string& user_name) {
 
 static int ShowLoginAndGetUserNumber(const std::string& remote_username) {
   bout.nl();
-  // bout.outstr("Enter number or name or 'NEW'\r\nNN: ");
-  bout.str("NN_PROMPT");
+  bout.outstr("<identify> (name, number or NEW) \r\nNN: ");
+  //bout.str("NN_PROMPT");
 
   std::string user_name;
   if (remote_username.empty()) {
@@ -180,7 +180,7 @@ static int ShowLoginAndGetUserNumber(const std::string& remote_username) {
     user_name = remote_username;
   }
   StringTrim(&user_name);
-
+  
   Trashcan trashcan(*a()->config());
   if (trashcan.IsTrashName(user_name)) {
     LOG(INFO) << "Trashcan name entered from IP: " << bout.remoteIO()->remote_info().address
@@ -220,77 +220,7 @@ bool VerifyPhoneNumber() {
   return true;
 }
 
-static bool VerifyPassword(const std::string& remote_password) {
-  a()->UpdateTopScreen();
 
-  if (!remote_password.empty() && remote_password == a()->user()->password()) {
-    return true;
-  }
-
-  const auto password = bin.input_password(bout.lang().value("PW_PROMPT"), 8);
-  return password == a()->user()->password();
-}
-
-static bool VerifySysopPassword() {
-  const auto password = bin.input_password("SY: ", 20);
-  return password == a()->config()->system_password();
-}
-
-static void DoFailedLoginAttempt() {
-  a()->user()->increment_illegal_logons();
-  a()->WriteCurrentUser();
-  bout.outstr("\r\n\aILLEGAL LOGON\a\r\n\n");
-
-  sysoplog(false, "");
-  sysoplog(false, fmt::format("### ILLEGAL LOGON for {}", a()->user()->name_and_number()));
-  sysoplog(false, "");
-  a()->sess().user_num(0);
-}
-
-static void LeaveBadPasswordFeedback(int ans) {
-  auto at_exit = finally([] {
-    a()->sess().user_num(0);
-  });
-  
-  if (ans > 0) {
-    a()->user()->set_flag(User::flag_ansi);
-  } else {
-    a()->user()->clear_flag(User::flag_ansi);
-  }
-  bout.outstr("|#6Too many logon attempts!!\r\n\n");
-  bout.print("|#9Would you like to leave Feedback to {}? ", a()->config()->sysop_name());
-  if (!bin.yesno()) {
-    return;
-  }
-  bout.nl();
-  bout.outstr("What is your NAME or HANDLE? ");
-  const auto temp_name = bin.input_proper("", 31);
-  if (temp_name.empty()) {
-    return;
-  }
-  bout.nl();
-  a()->sess().user_num(1);
-  a()->user()->set_name(temp_name);
-  a()->user()->macro(0, "");
-  a()->user()->macro(1, "");
-  a()->user()->macro(2, "");
-  a()->user()->sl(a()->config()->newuser_sl());
-  a()->user()->screen_width(80);
-  if (ans > 0) {
-    select_editor();
-  } else {
-    a()->user()->default_editor(0);
-  }
-  a()->user()->email_sent(0);
-  const auto save_allow_cc = a()->IsCarbonCopyEnabled();
-  a()->SetCarbonCopyEnabled(false);
-  const auto title = StrCat("** Illegal logon feedback from ", temp_name);
-  email(title, 1, 0, true, 0, true);
-  a()->SetCarbonCopyEnabled(save_allow_cc);
-  if (a()->user()->email_sent() > 0) {
-    ssm(1) << "Check your mailbox.  Someone forgot their password again!";
-  }
-}
 
 static void CheckCallRestrictions() {
   if (a()->sess().user_num() > 0 && a()->user()->restrict_logon() &&
