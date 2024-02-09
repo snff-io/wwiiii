@@ -19,6 +19,7 @@
 
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace wwiv::sdk::ansi {
 
