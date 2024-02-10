@@ -296,15 +296,9 @@ File::size_type File::Write(const void* buffer, File::size_type size) {
 
 // ReSharper disable once CppMemberFunctionMayBeConst
 File::size_type File::Seek(size_type offset, Whence whence) {
-  
-  try {
-    CHECK(File::IsFileHandleValid(handle_));
-    
-    CHECK(whence == File::Whence::begin || whence == File::Whence::current ||
-        whence == File::Whence::end);
-  } catch (const std::exception& ex) {
-    // Handle the exception here
-  }
+  CHECK(File::IsFileHandleValid(handle_));
+  CHECK(whence == File::Whence::begin || whence == File::Whence::current ||
+      whence == File::Whence::end);
 
   return static_cast<size_type>(lseek(handle_, static_cast<long>(offset), static_cast<int>(whence)));
 }

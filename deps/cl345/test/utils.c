@@ -1498,7 +1498,7 @@ int testTimingAttackPKC( void )
 		{
 		/* 32/64-bit QPC: All = times[ i ].
 		   64-bit rdtsc: All = times[ i ] / 50, delay = times[ i ] / 2 */
-		printf( "%lu, ", times[ i ] );
+		printf( "%d, ", times[ i ] );
 		}
 	putchar( '\n' );
 	timeDisplayMean( times, NO_SAMPLES );
