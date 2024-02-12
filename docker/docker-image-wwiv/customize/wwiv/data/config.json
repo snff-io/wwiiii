@@ -1,0 +1,80 @@
+{
+    "version": 1,
+    "config": {
+        "header": {
+            "config_revision_number": 5,
+            "last_written_date": "Sun Feb 11 03:38:14 2024",
+            "written_by_wwiv_num_version": 520,
+            "written_by_wwiv_version": "5.9.0development"
+        },
+        "systempw": "SYSOP",
+        "msgsdir": "msgs",
+        "gfilesdir": "gfiles",
+        "datadir": "data",
+        "dloadsdir": "dloads",
+        "scriptdir": "scripts",
+        "logdir": "logs",
+        "num_instances": 8,
+        "tempdir_format": "e/%n/temp",
+        "batchdir_format": "e/%n/batch",
+        "scratchdir_format": "e/%n/scratch",
+        "systemname": "the.worldcomputer.info",
+        "systemphone": "   -   -    ",
+        "sysopname": "zaja",
+        "menudir": "menus",
+        "closedsystem": false,
+        "newuserpw": "",
+        "newusersl": 10,
+        "newuserdsl": 0,
+        "newusergold": 100.0,
+        "newuser_restrict": 4,
+        "newuser_config": {
+            "use_real_name": "required",
+            "use_voice_phone": "optional",
+            "use_data_phone": "optional",
+            "use_address_street": "optional",
+            "use_address_city_state": "required",
+            "use_address_zipcode": "required",
+            "use_address_country": "required",
+            "use_callsign": "optional",
+            "use_gender": "required",
+            "use_birthday": "required",
+            "use_computer_type": "required",
+            "use_email_address": "required"
+        },
+        "newuploads": 0,
+        "sysconfig": 0,
+        "sysoplowtime": 0,
+        "sysophightime": 0,
+        "wwiv_reg_number": 0,
+        "post_call_ratio": 0.0,
+        "req_ratio": 0.0,
+        "userreclen": 1024,
+        "waitingoffset": 628,
+        "inactoffset": 576,
+        "sysstatusoffset": 800,
+        "fsoffset": 690,
+        "fuoffset": 688,
+        "fnoffset": 692,
+        "qscn_len": 1076,
+        "maxwaiting": 50,
+        "maxusers": 500,
+        "max_subs": 256,
+        "max_dirs": 128,
+        "max_backups": 0,
+        "script_flags": 0,
+        "toggles": {
+            "lastnet_at_logon": false,
+            "show_chain_usage": false
+        },
+        "colors": {
+            "msg": {
+                "text_color": "|#0",
+                "quote_color": "|#5",
+                "kludge_color": "|08",
+                "origin_color": "|#8",
+                "tear_color": "|#8"
+            }
+        }
+    }
+}

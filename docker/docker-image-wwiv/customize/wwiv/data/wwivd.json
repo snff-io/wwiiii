@@ -1,0 +1,46 @@
+{
+    "wwivd": {
+        "telnet_port": 2323,
+        "ssh_port": 2222,
+        "binkp_port": -1,
+        "binkp_cmd": "./networkb --receive --handle=@H",
+        "do_network_callouts": false,
+        "network_callout_cmd": "./networkb --send --net=@T --node=@N",
+        "do_beginday_event": false,
+        "beginday_cmd": "./bbs -e",
+        "http_address": "127.0.0.1",
+        "http_port": 59948,
+        "bbses": [
+            {
+                "description": "WWIV",
+                "end_node": 3,
+                "key": 87,
+                "local_node": 4,
+                "name": "WWIV",
+                "require_ansi": false,
+                "ssh_cmd": "./bbs -XS -H@H -N@N",
+                "start_node": 1,
+                "telnet_cmd": "./bbs -XT -H@H -N@N",
+                "data_mode": "socket",
+                "working_directory": "",
+                "wwiv_bbs": true
+            }
+        ],
+        "launch_minimized": false,
+        "blocking": {
+            "mailer_mode": false,
+            "use_badip_txt": true,
+            "use_goodip_txt": true,
+            "max_concurrent_sessions": 1,
+            "auto_blocklist": true,
+            "auto_bl_sessions": 3,
+            "auto_bl_seconds": 30,
+            "use_dns_rbl": true,
+            "dns_rbl_server": "xbl.spamhaus.org",
+            "use_dns_cc": false,
+            "dns_cc_server": "zz.countries.nerd.dk",
+            "block_cc_countries": [],
+            "block_duration": []
+        }
+    }
+}

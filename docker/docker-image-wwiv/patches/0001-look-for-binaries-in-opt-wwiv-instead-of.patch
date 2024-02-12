@@ -1,0 +1,57 @@
+From fd71e56f47f3e9db8b7eb7ddd16f119a0184454a Mon Sep 17 00:00:00 2001
+From: Lars Kellogg-Stedman <lars@redhat.com>
+Date: Thu, 16 Mar 2017 14:08:48 -0400
+Subject: [PATCH] look for binaries in /opt/wwiv instead of .
+
+---
+ bbs/netsup.cpp    | 4 ++--
+ init/wwivd_ui.cpp | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/bbs/netsup.cpp b/bbs/netsup.cpp
+index 82b0990..b60b8ba 100644
+--- a/bbs/netsup.cpp
++++ b/bbs/netsup.cpp
+@@ -72,7 +72,7 @@ std::chrono::steady_clock::time_point last_time_c_;
+ 
+ /** Returns a full path to exe under the WWIV_DIR */
+ static string CreateNetworkBinary(const std::string exe) {
+-  return (StrCat(a()->GetHomeDir(), exe));
++  return (StrCat("/opt/wwiv/", exe));
+ }
+ 
+ struct CalloutEntry {
+@@ -1115,4 +1115,4 @@ void run_exp() {
+ 
+ std::chrono::steady_clock::time_point last_network_attempt() {
+   return last_time_c_;
+-}
+\ No newline at end of file
++}
+diff --git a/init/wwivd_ui.cpp b/init/wwivd_ui.cpp
+index d938ce7..ad6b836 100644
+--- a/init/wwivd_ui.cpp
++++ b/init/wwivd_ui.cpp
+@@ -171,7 +171,7 @@ void wwivd_ui(const wwiv::sdk::Config& config) {
+     c.telnet_port = 2323;
+     c.http_port = 8080;
+     c.http_address = "127.0.0.1";
+-    c.binkp_cmd = "./networkb --receive --handle=@H";
++    c.binkp_cmd = "/opt/wwiv/networkb --receive --handle=@H";
+ 
+     wwivd_matrix_entry_t e{};
+     e.key = 'W';
+@@ -181,8 +181,8 @@ void wwivd_ui(const wwiv::sdk::Config& config) {
+     e.require_ansi = false;
+     e.start_node = 2;
+     e.end_node = 4;
+-    e.telnet_cmd = "./bbs -XT -H@H -N@N";
+-    e.ssh_cmd = "./bbs -XS -H@H -N@N";
++    e.telnet_cmd = "/opt/wwiv/bbs -XT -H@H -N@N";
++    e.ssh_cmd = "/opt/wwiv/bbs -XS -H@H -N@N";
+ 
+     c.bbses.push_back(e);
+   }
+-- 
+2.9.3
+

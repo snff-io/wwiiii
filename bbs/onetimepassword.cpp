@@ -29,6 +29,7 @@
 #include <bitset>
 #include "qr.hpp"
 
+
 // Rotate left function
 #define ROTL32(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 
@@ -108,7 +109,7 @@ std::string sha1(const std::string& input) {
     // Convert the result to a hexadecimal string
     std::ostringstream result;
     for (int i = 0; i < 5; ++i) {
-        result << std::hex << std::setfill('0') << std::setw(8) << state[i];
+        result << std::hex << std::setw(8) << std::setfill('0') << state[i];
     }
 
     return result.str();
@@ -121,7 +122,7 @@ std::string generateOTP(const std::string& key, const long timeStep = 30, const 
     // Calculate the counter based on the time step
     long counter = currentTime / timeStep;
 
-    // Convert the counter to a byte array (big-endian)
+    // Convert the counter to a byte array (big -endian)
     unsigned char counterBytes[8];
     for (int i = 7; i >= 0; --i) {
         counterBytes[i] = static_cast<unsigned char>((counter >> (i * 8)) & 0xFF);
@@ -148,6 +149,43 @@ std::string generateOTP(const std::string& key, const long timeStep = 30, const 
     return otpStream.str();
 }
 
+/*
+std::string otp_generate(const std::string& key, const long timeStep = 30, const int digits = 6) {
+    // Get the current time in seconds since the Unix epoch
+    long currentTime = std::time(nullptr);
+
+    // Calculate the counter based on the time step
+    long counter = currentTime / timeStep;
+
+    // Convert the counter to a byte array (big-endian)
+    unsigned char counterBytes[8];
+    for (int i = 7; i >= 0; --i) {
+        counterBytes[i] = static_cast<unsigned char>((counter >> (i * 8)) & 0xFF);
+    }
+
+    // Use HMAC-SHA1 to calculate the hash
+    unsigned int hashLen;
+    unsigned char hashValue[EVP_MAX_MD_SIZE];
+    HMAC(EVP_sha1(), key.c_str(), key.length(), counterBytes, 8, hashValue, &hashLen);
+
+    // Dynamic Truncation
+    int offset = hashValue[hashLen - 1] & 0xF;
+    int binary =
+        ((hashValue[offset] & 0x7F) << 24) |
+        ((hashValue[offset + 1] & 0xFF) << 16) |
+        ((hashValue[offset + 2] & 0xFF) << 8) |
+        (hashValue[offset + 3] & 0xFF);
+
+    int otpValue = binary % static_cast<int>(std::pow(10, digits));
+
+    // Format the OTP with leading zeros if necessary
+    std::ostringstream otpStream;
+    otpStream << std::setw(digits) << std::setfill('0') << otpValue;
+
+    return otpStream.str();
+}
+
+*/
 bool validateOTP(const std::string& key, const std::string& userEnteredOTP, const long timeStep = 30, const int digits = 6) {
     // Generate the expected OTP using the same parameters
     std::string expectedOTP = generateOTP(key, timeStep, digits);
@@ -181,10 +219,21 @@ void printQr(const qr::Qr<ver> &codec) {
 
 int main( ) {
 
+    // Get the current time in seconds since the Unix epoch
+    long currentTime = std::time(nullptr);
+
+    // Calculate the counter based on the time step
+    long counter = currentTime / 30;
+
+
     // Replace "YourSecretKey" with your secret key
-    std::string secretKey = "23423rded"; //generateRandomSecretKey();
+    std::string secretKey = "abcdefghijklmnopqrstuvwxzy"; //generateRandomSecretKey();
     std::cout << "Generated Secret: " << secretKey << std::endl;
     std::cout << "SHA1 of secret: " << sha1(secretKey) << std::endl;
+    std::cout << "Counter: " << counter << std::endl;
+    std::cout << "SHA1 of secret+counter: " << sha1(secretKey + std::to_string(counter) ) << std::endl;
+   
+    
     // Generate and display the micro QR code
    std::string str = "https://the.worldcomputer.info"; 
    //secretKey;
