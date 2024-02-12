@@ -114,40 +114,32 @@ std::string sha1(const std::string& input) {
     return result.str();
 }
 
-std::string generateRandomSecretKey() {
-    // Generate a random 10-digit number
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dis(100000000, 999999999); // Range for 10-digit number
-
-    return std::to_string(dis(gen));
-}
-
 std::string generateOTP(const std::string& key, const long timeStep = 30, const int digits = 6) {
-        // Get the current time in seconds
+    // Get the current time in seconds since the Unix epoch
     long currentTime = std::time(nullptr);
 
     // Calculate the counter based on the time step
     long counter = currentTime / timeStep;
 
-    // Convert the counter to a byte array
+    // Convert the counter to a byte array (big-endian)
     unsigned char counterBytes[8];
     for (int i = 7; i >= 0; --i) {
-        counterBytes[i] = static_cast<unsigned char>(counter & 0xFF);
-        counter >>= 8;
+        counterBytes[i] = static_cast<unsigned char>((counter >> (i * 8)) & 0xFF);
     }
 
-    // Use chatGPT's HMAC-SHA1
-    std::string hashValue = sha1(key);
+    // Use sha1 function to calculate the hash
+    std::string hashValue = sha1(key + std::string(reinterpret_cast<char*>(counterBytes), 8));
 
-    // Take the last 4 characters from the hashValue
-    std::string truncatedHash = hashValue.substr(hashValue.length() - 4);
-
-    // Convert the truncated hash to an integer
-    int otpValue = std::stoi(truncatedHash, nullptr, 16);
+    // Take the least significant 4 bytes from the hashValue
+    int offset = hashValue[hashValue.length() - 1] & 0xF;
+    int binary =
+        ((hashValue[offset] & 0x7F) << 24) |
+        ((hashValue[offset + 1] & 0xFF) << 16) |
+        ((hashValue[offset + 2] & 0xFF) << 8) |
+        (hashValue[offset + 3] & 0xFF);
 
     // Modulo to get a 6-digit OTP
-    otpValue %= static_cast<int>(std::pow(10, digits));
+    int otpValue = binary % static_cast<int>(std::pow(10, digits));
 
     // Format the OTP with leading zeros if necessary
     std::ostringstream otpStream;
@@ -162,6 +154,15 @@ bool validateOTP(const std::string& key, const std::string& userEnteredOTP, cons
 
     // Compare the user-entered OTP with the expected OTP
     return (userEnteredOTP == expectedOTP);
+}
+
+std::string generateRandomSecretKey() {
+    // Generate a random 10-digit number
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(100000000, 999999999); // Range for 10-digit number
+
+    return std::to_string(dis(gen));
 }
 
 constexpr int ver = 4;
@@ -181,9 +182,9 @@ void printQr(const qr::Qr<ver> &codec) {
 int main( ) {
 
     // Replace "YourSecretKey" with your secret key
-    std::string secretKey = generateRandomSecretKey();
+    std::string secretKey = "23423rded"; //generateRandomSecretKey();
     std::cout << "Generated Secret: " << secretKey << std::endl;
-    
+    std::cout << "SHA1 of secret: " << sha1(secretKey) << std::endl;
     // Generate and display the micro QR code
    std::string str = "https://the.worldcomputer.info"; 
    //secretKey;
