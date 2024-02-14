@@ -218,6 +218,13 @@ void printQr(const qr::Qr<ver> &codec) {
 }
 
 int main( ) {
+    uint32_t   endianness;
+    endianness = 0xdeadbeef;
+    if ((*(const uint8_t *)&endianness) == 0xef)
+    {
+        std::cout << "le";
+    };
+
 
     // Get the current time in seconds since the Unix epoch
     long currentTime = std::time(nullptr);
