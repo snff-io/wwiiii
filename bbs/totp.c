@@ -41,19 +41,13 @@
 #include <string.h>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
-#include <stdlib.h>
 
 #define ALLOWED_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
 #define LENGTH 32
 
-char* gen_key() {
+std::string generateKey() {
     char allowed_chars[] = ALLOWED_CHARS;
-    char* generated_string = (char*)malloc((LENGTH + 1) * sizeof(char)); // +1 for null terminator
-
-    if (generated_string == NULL) {
-        fprintf(stderr, "Memory allocation failed\n");
-        exit(EXIT_FAILURE);
-    }
+    std::string generated_string;
 
     srand(time(NULL));
 
@@ -66,6 +60,8 @@ char* gen_key() {
 
     return generated_string;
 }
+
+
 
 static const int8_t base32_vals[256] =
 {
@@ -94,10 +90,9 @@ static const int8_t base32_vals[256] =
 //static const char * base32_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567=";
 
 
-int main(int argc, char * argv[]);
+//int main(int argc, char * argv[]);
 
-
-int main(int argc, char * argv[])
+int generateOtp(std:string key)
 {
    size_t     pos;
    size_t     len;
@@ -115,26 +110,10 @@ int main(int argc, char * argv[])
    x  = 30;
    t0 = 0;
 
-   switch(argc)
-   {
-      case 4:
-      t0 = strtoll(argv[3], NULL, 0);
+   k = (uint8_t *)key
+   len = strlen(key);
 
-      case 3:
-      x  = strtoll(argv[2], NULL, 0);
 
-      case 2:
-      k  = (uint8_t *)argv[1];
-      break;
-
-      default:
-      fprintf(stderr, "usage: %s <b32_key> [ <interval> [ <start> ] ]\n", argv[0]);
-      fprintf(stderr, "generated <b32_key>;\n");
-      fprintf(stderr, "%s\n", gen_key());
-      return(1);
-      break;
-   };
-   len = strlen(argv[1]);
    // validates base32 key
    if (((len & 0xF) != 0) && ((len & 0xF) != 8))
    {
@@ -265,8 +244,5 @@ int main(int argc, char * argv[])
    // truncates code to 6 digits
    totp = bin_code % 1000000;
 
-
-   printf("totp: %06u\n", totp);
-
-   return(0);
+   return(totp);
 }
