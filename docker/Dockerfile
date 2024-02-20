@@ -1,4 +1,4 @@
-FROM fedora
+FROM fedora AS BUILD
 ARG git_branch=main
 ARG git_refspec=HEAD
 
@@ -39,21 +39,39 @@ RUN sh /docker/build-wwiv.sh /src/wwiv
 COPY install-wwiv.sh /docker/install-wwiv.sh
 RUN sh /docker/install-wwiv.sh /src/wwiv/_build /opt/wwiv
 
+FROM scratch
+
+COPY --from=BUILD /opt/wwiv /opt/wwiv/
+
 EXPOSE 2323/tcp
 EXPOSE 2222/tcp
 
-# RUN useradd -d /srv/wwiv wwiv && \
-# 	echo "wwiv ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers	
+RUN useradd -d /srv/wwiv wwiv && wwiv ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers	
+
+
+#!/bin/sh
+
+LABEL SITUATION_ENTRYPOINT="BEGIN"
+
+ENV PATH=/opt/wwiv:$PATH
+ENV HOME=/opt/wwiv 
+WORKDIR /opt/wwiv
+RUN chown -R wwiv:wwiv .
+
+#exec /sbin/runuser -p -u wwiv -- "$@"
+
+LABEL SITUATION_ENTRYPOINT="EHD"
+
+LABEL SITUATION_CUSTOMIZATION ="BEGIN"
 
 COPY customize/wwiv/ /opt/wwiv/
 RUN chmod -R 775 /opt/wwiv
 
-WORKDIR /srv/wwiv
-VOLUME /srv/wwiv
+LABEL SITUATION_CUSTOMIZATION ="END"
 
-#COPY entrypoint.sh /docker/entrypoint.sh
-COPY entrypoint_debug.sh /docker/entrypoint_debug.sh
-RUN  /docker/entrypoint_debug.sh
+
+# COPY entrypoint.sh /docker/entrypoint.sh
+# RUN  /docker/entrypoint.sh
 ENTRYPOINT ["/opt/wwiv/wwivd"]
 
 

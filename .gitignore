@@ -8,7 +8,11 @@
 *.VC.opendb
 *.VC.db
 .vs
+
 *.COD
+
+#nice to have
+!launch.json
 
 # Build results
 [Dd]ebug/

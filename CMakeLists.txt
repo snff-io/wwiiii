@@ -29,6 +29,11 @@ find_package(cereal CONFIG REQUIRED)
 MACRO_ENSURE_OUT_OF_SOURCE_BUILD()
 ENSURE_MINIMUM_COMPILER_VERSIONS()
 
+# Set compiler options
+if (SITUATION_COMPILE_QUIET)
+  add_compile_options(-q)  # Suppress most informational messages during compilation
+endif()
+
 if(WWIV_ASAN_ENABLED)
   string(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   message(STATUS "Enabling -fsanitize=address")
