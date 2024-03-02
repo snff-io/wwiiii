@@ -7,7 +7,7 @@
 *.sln.docstates
 *.VC.opendb
 *.VC.db
-.vs
+
 
 *.COD
 
@@ -227,3 +227,4 @@ core/version.cpp.saved
 vcpkg_installed
 
 
+il/

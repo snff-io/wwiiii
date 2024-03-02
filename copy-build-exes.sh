@@ -1,0 +1,10 @@
+cp build/bbs/bbs /opt/wwiv
+cp build/wwivd/wwivd /opt/wwiv
+cp build/wwivconfig/wwivconfig /opt/wwiv
+cp build/network/network /opt/wwiv
+cp build/network/network /opt/wwiv
+cp build/network1/network1 /opt/wwiv
+cp build/network3/network3 /opt/wwiv
+cp build/networkb/networkb /opt/wwiv
+cp build/networkc/networkc /opt/wwiv
+cp build/networkt/networkt /opt/wwiv
