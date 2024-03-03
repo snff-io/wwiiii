@@ -9,17 +9,28 @@ if(POLICY CMP0092)
   cmake_policy(SET CMP0092 NEW)
 endif()
 
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
-  CACHE STRING "Vcpkg toolchain file")
+# set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake
+#   CACHE STRING "Vcpkg toolchain file")
 
 project(wwiv)
 
+include(FetchContent)
+
+FetchContent_Declare(
+    cereal
+    GIT_REPOSITORY https://github.com/USCiLab/cereal.git
+    GIT_TAG        master
+)
+
+FetchContent_MakeAvailable(cereal)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # Set the current root as the Include directory for the compiler,
 # since WWIV uses include paths like "core/foo.h"
 include_directories(${CMAKE_SOURCE_DIR})
+include_directories(deps)
+
 
 include(Common)
 include(FindASan)

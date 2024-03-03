@@ -5,6 +5,6 @@
 	path = deps/pdcurses
 	url = https://github.com/wwivbbs/PDCurses.git
 	branch = master
-[submodule "vcpkg"]
-	path = vcpkg
-	url = https://github.com/Microsoft/vcpkg
+[submodule "external/cereal"]
+	path = external/cereal
+	url = https://github.com/USCiLab/cereal.git

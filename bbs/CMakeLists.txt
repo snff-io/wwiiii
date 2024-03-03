@@ -134,7 +134,7 @@ if(UNIX)
   endif()
 
   find_package (Threads)
-  target_link_libraries(bbs_lib z util ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT} nlohmann_json::nlohmann_json)
+  target_link_libraries(bbs_lib z util ${CMAKE_DL_LIBS} ${CMAKE_THREAD_LIBS_INIT} )
 
 endif()
 
@@ -154,7 +154,7 @@ if(OS2)
 		make_abs_cmd_os2.cpp 
   )
 endif()
-find_package(nlohmann_json CONFIG REQUIRED)
+#find_package(nlohmann_json CONFIG REQUIRED)
 
 target_link_libraries(
   bbs_lib 
@@ -163,13 +163,15 @@ target_link_libraries(
   common
   core 
   fsed
-  sdk 
-  nlohmann_json::nlohmann_json
-
+  sdk
 )
 
- find_path(CPP_HTTPLIB_INCLUDE_DIRS "httplib.h")
-target_include_directories(bbs_lib PRIVATE ${CPP_HTTPLIB_INCLUDE_DIRS})
+
+# find_path(CPP_HTTPLIB_INCLUDE_DIRS "httplib.h")
+# target_include_directories(bbs_lib PRIVATE ${CPP_HTTPLIB_INCLUDE_DIRS})
+
+
+target_include_directories(bbs_lib PRIVATE)
 
 if (WWIV_SSH_CRYPTLIB AND NOT OS2) 
   message(STATUS "WWIV_SSH_CRYPTLIB is ON")

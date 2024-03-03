@@ -1,13 +1,11 @@
 #!/bin/bash
-set -e
-
-if [[ $(id -u) -ne 0 ]]; then
-   echo "$0 must be executed as root."
-   exit 1
-fi
+set -xe
 
 echo "Installing prerequistes for Debian/Ubuntu"
 
-apt-get update
-apt-get install -y libncurses-dev libncurses5-dev build-essential git cmake zip ninja-build gettext zlib1g-dev pkg-config
-# gettext is in there since some versions of git don't express that dep properly.
+sudo apt-get update
+sudo apt-get install -y \
+    build-essential sudo git make libncurses5-dev \
+    libcereal-dev libfmt-dev libgtest-dev libgmock-dev cmake libboost-all-dev \
+    gcc g++ vim unzip zip \
+    findutils iproute2 procps zlib1g-dev
