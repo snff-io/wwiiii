@@ -4,7 +4,7 @@
         {
             "label": "remake-copy-bbs",
             "type": "shell",
-            "command": "${workspaceFolder}/remake-copy-bbs.sh",
+            "command": "${workspaceFolder}/builds/linux/remake-copy-bbs.sh",
         }
     ]
 }
