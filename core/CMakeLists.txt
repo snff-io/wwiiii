@@ -1,6 +1,6 @@
 # CMake for WWIV
 
-find_package(cereal CONFIG REQUIRED)
+
 
 add_library(core
   "clock.cpp"
