@@ -35,7 +35,7 @@ namespace wwiv::os {
 void sleep_for(duration<double> d) {
   // usleep is microseconds.
   const auto ns = duration_cast<microseconds>(d);
-  usleep(static_cast<__useconds_t>(ns.count()));
+  usleep(static_cast<useconds_t>(ns.count()));
 }
 
 void sound(uint32_t frequency, duration<double> d) {
