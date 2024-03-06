@@ -24,7 +24,7 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(cereal)
-find_package(cereal CONFIG REQUIRED)
+
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # Set the current root as the Include directory for the compiler,
