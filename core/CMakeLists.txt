@@ -65,7 +65,7 @@ if(OS2)
   )
 endif()
 
-
+find_package(cereal CONFIG REQUIRED)
 configure_file(version_internal.h.in version_internal.h @ONLY)
 
 #target_compile_options(core PRIVATE  /fsanitize=address)

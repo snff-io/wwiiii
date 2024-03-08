@@ -14,16 +14,7 @@ endif()
 
 project(wwiv)
 
-include(FetchContent)
-
-FetchContent_Declare(
-
-    cereal
-    GIT_REPOSITORY https://github.com/USCiLab/cereal.git
-    GIT_TAG        master
-)
-
-FetchContent_MakeAvailable(cereal)
+find_package(cereal CONFIG REQUIRED)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
