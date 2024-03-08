@@ -23,6 +23,7 @@ wwiv_source_root=$(find / -name "WWIV_SOURCE_ROOT" 2>/dev/null | head -n 1)
 wwiv_source_root="$(dirname "$(readlink -f "$wwiv_source_root")")"
 cd "$wwiv_source_root/build"
 
+sudo rm -rf /opt/wwiv
 sudo mkdir -p /opt/wwiv
 sudo install -m 755 $BINARIES /opt/wwiv
 
