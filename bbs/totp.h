@@ -36,5 +36,5 @@
  *  Compile with:  gcc -Wall -o totp totp.c -lcrypto
  */
 //int main(int argc, char * argv[]);
-char* generateKey();
-int generateOtp(char * key)
+char* generate_key();
+int generate_otp(char * key)
