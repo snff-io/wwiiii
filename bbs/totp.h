@@ -37,4 +37,4 @@
  */
 //int main(int argc, char * argv[]);
 char* generate_key();
-int generate_otp(char * key)
+int generate_otp(char * key);
